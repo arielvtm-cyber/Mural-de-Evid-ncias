@@ -3,7 +3,7 @@ import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 // ==============================
 // CONFIGURAÇÃO
 // ==============================
-const API_KEY_CHAT = "CAIzaSyD3jgUc0QuF6LPS-8i3xb0ajZfcmu_Eikc"; // <--- COLOQUE SUA CHAVE AQUI
+const API_KEY_CHAT = "AIzaSyD3jgUc0QuF6LPS-8i3xb0ajZfcmu_Eikc"; // <--- COLOQUE SUA CHAVE AQUI
 
 const genAI = new GoogleGenerativeAI(API_KEY_CHAT);
 const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
