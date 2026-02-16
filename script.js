@@ -1,13 +1,6 @@
-import { GoogleGenerativeAI } from "https://esm.sh/@google/generative-ai";
-
-
 // ==============================
 // CONFIGURAÇÃO
 // ==============================
-const API_KEY_CHAT = "AIzaSyD3jgUc0QuF6LPS-8i3xb0ajZfcmu_Eikc"; // <--- COLOQUE SUA CHAVE AQUI
-
-const genAI = new GoogleGenerativeAI(API_KEY_CHAT);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-pro" });
 
 const systemPrompt = `Você é o Mestre de um RPG Noir de investigação. 
 O clima é sério, sombrio e realista. 
@@ -18,44 +11,62 @@ REGRAS:
 4. Mantenha as respostas concisas e atmosféricas.`;
 
 // ==============================
-// ESTADO E ELEMENTOS
+// ESTADO
 // ==============================
+
 let evidenciasColetadas = new Set();
+let chatHistory = [
+  { role: "user", parts: [{ text: systemPrompt }] }
+];
+
 const log = document.getElementById('log');
 const typingIndicator = document.getElementById('typing-indicator');
 const mural = document.getElementById('mural');
 
-let chat = model.startChat({
-    history: [{ role: "user", parts: [{ text: systemPrompt }] }],
-});
-
-
 // ==============================
-// LÓGICA PRINCIPAL
+// FUNÇÃO PRINCIPAL
 // ==============================
 
 async function sendMessage(text) {
-    if(!text) return;
+    if (!text) return;
 
-    // UI: Mensagem do Jogador
     log.innerHTML += `<div class="entry"><strong>> INVESTIGADOR:</strong> ${text}</div>`;
     typingIndicator.classList.remove('hidden');
     log.scrollTop = log.scrollHeight;
 
     try {
-        const result = await chat.sendMessage(text);
-        const response = await result.response;
-        const cleanText = updateInterface(response.text());
+        const response = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                message: text,
+                history: chatHistory
+            })
+        });
 
-        // UI: Resposta do Mestre
+        const data = await response.json();
+        if (!response.ok) throw new Error(data.error);
+
+        const cleanText = updateInterface(data.text);
+
+        chatHistory.push(
+            { role: "user", parts: [{ text }] },
+            { role: "model", parts: [{ text: data.text }] }
+        );
+
         log.innerHTML += `<div class="entry npc-talk"><strong>MESTRE:</strong><br>${cleanText}</div>`;
+
     } catch (e) {
-        log.innerHTML += `<div class="entry system-msg">ERRO DE CONEXÃO: ${e.message}</div>`;
+        log.innerHTML += `<div class="entry system-msg">ERRO: ${e.message}</div>`;
     } finally {
         typingIndicator.classList.add('hidden');
         log.scrollTop = log.scrollHeight;
     }
 }
+
+// ==============================
+// ATUALIZA INTERFACE
+// ==============================
 
 function updateInterface(text) {
     const regex = /\[\[STATS: T=(\d+), V=(\d+), C=(\d+), EVIDENCIAS=(.*)\]\]/;
@@ -64,15 +75,15 @@ function updateInterface(text) {
     if (match) {
         const [_, t, v, c, evStr] = match;
 
-        // Atualiza Barras
         document.getElementById('t-bar').style.width = t + '%';
         document.getElementById('t-val').innerText = t + '%';
+
         document.getElementById('v-bar').style.width = v + '%';
         document.getElementById('v-val').innerText = v + '%';
+
         document.getElementById('c-bar').style.width = c + '%';
         document.getElementById('c-val').innerText = c + '%';
 
-        // Atualiza Mural (Sem duplicatas)
         const itens = evStr.split(';').map(i => i.trim()).filter(i => i !== '');
         itens.forEach(item => {
             if (!evidenciasColetadas.has(item)) {
@@ -90,16 +101,12 @@ function updateInterface(text) {
 }
 
 // ==============================
-// EVENTOS (FORMATO SEGURO)
+// EVENTOS
 // ==============================
 
-// Garante que o código rode após o carregamento
 window.addEventListener('load', () => {
     const sendBtn = document.getElementById('send-btn');
     const userInput = document.getElementById('userInput');
-    const peritosBtn = document.getElementById('peritos-btn');
-    const closeBtn = document.getElementById('close-popup');
-    const peritosPopup = document.getElementById('peritos-popup');
 
     if (sendBtn) {
         sendBtn.onclick = () => {
@@ -115,13 +122,5 @@ window.addEventListener('load', () => {
         userInput.onkeypress = (e) => {
             if (e.key === 'Enter') sendBtn.click();
         };
-    }
-
-    if (peritosBtn) {
-        peritosBtn.onclick = () => peritosPopup.classList.remove('hidden');
-    }
-
-    if (closeBtn) {
-        closeBtn.onclick = () => peritosPopup.classList.add('hidden');
     }
 });
