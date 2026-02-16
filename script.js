@@ -6,7 +6,7 @@ import { GoogleGenerativeAI } from "https://esm.run/@google/generative-ai";
 const API_KEY_CHAT = "AIzaSyD3jgUc0QuF6LPS-8i3xb0ajZfcmu_Eikc"; // <--- COLOQUE SUA CHAVE AQUI
 
 const genAI = new GoogleGenerativeAI(API_KEY_CHAT);
-const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+const model = genAI.getGenerativeModel({ model: "gemini-1.5" });
 
 const systemPrompt = `Você é o Mestre de um RPG Noir de investigação. 
 O clima é sério, sombrio e realista. 
