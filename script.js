@@ -28,6 +28,7 @@ let chat = model.startChat({
     history: [{ role: "user", parts: [{ text: systemPrompt }] }],
 });
 
+
 // ==============================
 // LÓGICA PRINCIPAL
 // ==============================
