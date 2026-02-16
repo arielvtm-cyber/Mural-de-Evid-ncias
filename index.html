@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquivo Criminal - Terminal Gemini</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="sidebar">
+    <h2>Dossiê do Caso</h2>
+    
+    <div class="stats-group">
+        <div class="stat-container">
+            <div class="stat-header"><span>TENSÃO</span><span id="t-val">10%</span></div>
+            <div class="bar-bg"><div id="t-bar" class="bar-fill" style="width:10%"></div></div>
+        </div>
+        <div class="stat-container">
+            <div class="stat-header"><span>VISIBILIDADE</span><span id="v-val">5%</span></div>
+            <div class="bar-bg"><div id="v-bar" class="bar-fill" style="width:5%"></div></div>
+        </div>
+        <div class="stat-container">
+            <div class="stat-header"><span>CREDIBILIDADE</span><span id="c-val">90%</span></div>
+            <div class="bar-bg"><div id="c-bar" class="bar-fill" style="width:90%"></div></div>
+        </div>
+    </div>
+
+    <hr>
+    <h3>MURAL DE EVIDÊNCIAS</h3>
+    <div id="mural" class="mural-grid"></div>
+</div>
+
+<div id="main-terminal">
+    <div id="log">
+        <div class="entry system-msg">[SISTEMA]: Terminal de investigação ativo. Aguardando relatório do agente...</div>
+    </div>
+    
+    <div id="typing-indicator" class="hidden">O Mestre está digitando...</div>
+
+    <div class="controls">
+        <input type="text" id="userInput" placeholder="O que você faz agora, detetive?">
+        <button id="send-btn">ENVIAR</button>
+        <button id="peritos-btn">CONTATOS</button>
+    </div>
+</div>
+
+<div id="peritos-popup" class="popup hidden">
+    <div class="popup-content">
+        <h3>Contatos de Peritos</h3>
+        <div class="perito-list">
+            <div class="perito"><strong>Ana Silva</strong> - Perita Forense</div>
+            <div class="perito"><strong>Bruno Costa</strong> - Agente de Campo</div>
+        </div>
+        <button id="close-popup">FECHAR</button>
+    </div>
+</div>
+
+<audio id="ambient-sound" loop>
+    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+</audio>
+
+<script type="module" src="script.js"></script>
+</body>
+</html>

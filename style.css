@@ -1,0 +1,74 @@
+:root {
+    --bg-dark: #0f0f0f;
+    --panel-bg: #1a1a1a;
+    --text-main: #e0e0e0;
+    --accent: #ffffff;
+    --border-color: #333;
+    --danger: #8b0000;
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Courier New', Courier, monospace;
+    display: flex;
+    height: 100vh;
+    margin: 0;
+}
+
+#sidebar {
+    width: 300px;
+    background: var(--panel-bg);
+    border-right: 2px solid var(--border-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+#main-terminal {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#log {
+    flex: 1;
+    overflow-y: auto;
+    background: #050505;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 20px;
+}
+
+.entry { margin-bottom: 15px; line-height: 1.4; border-left: 3px solid #444; padding-left: 10px; }
+.npc-talk { border-left-color: var(--accent); }
+.system-msg { color: #888; font-style: italic; border-left: none; }
+
+.bar-bg { background: #333; height: 8px; border-radius: 4px; margin-top: 5px; }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.5s ease; background: var(--accent); }
+
+.mural-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.evidence-card {
+    background: #222;
+    padding: 5px;
+    border: 1px solid #444;
+    font-size: 10px;
+    text-align: center;
+    word-break: break-word;
+}
+
+.controls { display: flex; gap: 10px; }
+input { flex: 1; background: #222; border: 1px solid #444; color: white; padding: 10px; }
+button { background: var(--accent); color: black; border: none; padding: 10px 20px; cursor: pointer; font-weight: bold; }
+button:hover { background: #ccc; }
+
+.hidden { display: none; }
+.popup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; }
+.popup-content { background: var(--panel-bg); padding: 30px; border: 1px solid var(--accent); }
