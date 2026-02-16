@@ -88,17 +88,38 @@ function updateInterface(text) {
 }
 
 // ==============================
-// EVENTOS
+// EVENTOS (FORMATO SEGURO)
 // ==============================
-document.getElementById('send-btn').onclick = () => {
-    const input = document.getElementById('userInput');
-    sendMessage(input.value);
-    input.value = '';
-};
 
-document.getElementById('userInput').onkeypress = (e) => {
-    if (e.key === 'Enter') document.getElementById('send-btn').click();
-};
+// Garante que o código rode após o carregamento
+window.addEventListener('load', () => {
+    const sendBtn = document.getElementById('send-btn');
+    const userInput = document.getElementById('userInput');
+    const peritosBtn = document.getElementById('peritos-btn');
+    const closeBtn = document.getElementById('close-popup');
+    const peritosPopup = document.getElementById('peritos-popup');
 
-document.getElementById('peritos-btn').onclick = () => document.getElementById('peritos-popup').classList.remove('hidden');
-document.getElementById('close-popup').onclick = () => document.getElementById('peritos-popup').classList.add('hidden');
+    if (sendBtn) {
+        sendBtn.onclick = () => {
+            const text = userInput.value.trim();
+            if (text) {
+                sendMessage(text);
+                userInput.value = '';
+            }
+        };
+    }
+
+    if (userInput) {
+        userInput.onkeypress = (e) => {
+            if (e.key === 'Enter') sendBtn.click();
+        };
+    }
+
+    if (peritosBtn) {
+        peritosBtn.onclick = () => peritosPopup.classList.remove('hidden');
+    }
+
+    if (closeBtn) {
+        closeBtn.onclick = () => peritosPopup.classList.add('hidden');
+    }
+});

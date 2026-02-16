@@ -55,6 +55,10 @@ body {
     margin-top: 15px;
 }
 
+.hidden { 
+    display: none !important; 
+}
+
 .evidence-card {
     background: #222;
     padding: 5px;
