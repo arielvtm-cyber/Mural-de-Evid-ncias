@@ -9,8 +9,11 @@
 <body>
 
 <div id="sidebar">
-    <h2>Dossiê do Caso</h2>
-    
+    <div class="sidebar-top">
+        <h2>Dossiê do Caso</h2>
+        <span id="case-status" class="case-status open">CASO ABERTO</span>
+    </div>
+
     <div class="stats-group">
         <div class="stat-container">
             <div class="stat-header"><span>TENSÃO</span><span id="t-val">10%</span></div>
@@ -26,16 +29,54 @@
         </div>
     </div>
 
+    <div class="turn-panel">
+        <div><strong>Turno:</strong> <span id="turn-counter">1</span></div>
+        <div><strong>Período:</strong> <span id="time-slot">Noite</span></div>
+    </div>
+
+    <div id="quick-actions" class="quick-actions">
+        <button class="quick-action-btn" data-action="interrogar">Interrogar suspeito</button>
+        <button class="quick-action-btn" data-action="vigiar">Vigiar área</button>
+        <button class="quick-action-btn" data-action="laboratorio">Analisar laboratório</button>
+        <button class="quick-action-btn" data-action="imprensa">Vazar para imprensa</button>
+    </div>
+
     <hr>
-    <h3>MURAL DE EVIDÊNCIAS</h3>
-    <div id="mural" class="mural-grid"></div>
+    <div class="mural-head">
+        <h3>MURAL DE EVIDÊNCIAS</h3>
+        <button id="create-folder-btn" class="icon-btn" title="Criar pasta">＋</button>
+    </div>
+
+    <div class="mural-tools">
+        <input id="mural-search" type="text" placeholder="Buscar no mural...">
+    </div>
+
+    <div class="mural-body">
+        <button id="back-folder-btn" class="icon-btn hidden" title="Voltar">←</button>
+        <div id="mural" class="mural-grid"></div>
+    </div>
+
+    <hr>
+    <h3>TIMELINE</h3>
+    <div id="timeline" class="timeline"></div>
+
+    <div class="sidebar-footer">
+        <div class="footer-left-actions">
+            <button id="storage-btn" class="icon-btn" title="Abrir armazenamento">🗄️</button>
+            <button id="theme-btn" class="icon-btn" title="Alternar tema">🌓</button>
+            <button id="export-btn" class="icon-btn" title="Exportar dossiê">⬇️</button>
+            <button id="import-btn" class="icon-btn" title="Importar dossiê">⬆️</button>
+            <input id="import-file" type="file" accept="application/json" class="hidden">
+        </div>
+        <button id="finish-case-btn" class="danger-btn">Encerrar caso</button>
+    </div>
 </div>
 
 <div id="main-terminal">
     <div id="log">
-        <div class="entry system-msg">[SISTEMA]: Terminal de investigação ativo. Aguardando relatório do agente...</div>
+        <div class="entry system-msg">[SISTEMA]: Terminal ativo. Configure a sessão antes de iniciar a investigação...</div>
     </div>
-    
+
     <div id="typing-indicator" class="hidden">O Mestre está digitando...</div>
 
     <div class="controls">
@@ -45,16 +86,39 @@
     </div>
 </div>
 
-<div id="peritos-popup" class="popup hidden">
-    <div class="popup-content">
-        <h3>Contatos de Peritos</h3>
-        <div class="perito-list">
-            <div class="perito"><strong>Ana Silva</strong> - Perita Forense</div>
-            <div class="perito"><strong>Bruno Costa</strong> - Agente de Campo</div>
+<div id="peritos-popup" class="popup hidden" role="dialog" aria-modal="true">
+    <div class="popup-content contacts-popup">
+        <button id="close-popup" class="close-popup-btn" aria-label="Fechar">✕</button>
+
+        <div id="contact-list-view">
+            <h3>Contatos de Peritos</h3>
+            <div id="perito-list" class="perito-list"></div>
         </div>
-        <button id="close-popup">FECHAR</button>
+
+        <div id="contact-chat-view" class="hidden">
+            <div class="contact-chat-header">
+                <button id="contact-back-btn" class="icon-btn" aria-label="Voltar para contatos">←</button>
+                <div class="contact-selected-meta">
+                    <div id="contact-selected-emoji" class="contact-emoji"></div>
+                    <div>
+                        <div id="contact-selected-name" class="contact-name"></div>
+                        <div id="contact-selected-role" class="contact-role"></div>
+                        <div id="contact-trust" class="contact-role"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="contact-chat-log" class="contact-chat-log"></div>
+
+            <div class="contact-chat-controls">
+                <input type="text" id="contact-chat-input" placeholder="Escreva para o perito...">
+                <button id="contact-send-btn">ENVIAR</button>
+            </div>
+        </div>
     </div>
 </div>
+
+<div id="toast" class="toast hidden"></div>
 
 <audio id="ambient-sound" loop>
     <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
